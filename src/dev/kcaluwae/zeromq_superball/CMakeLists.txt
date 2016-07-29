@@ -24,4 +24,6 @@ set(OSG_LIBRARIES ${OSG_LIBRARY} ${OSGVIEWER_LIBRARY} ${OPENTHREADS_LIBRARY} ${O
 include_directories(SYSTEM ${OSG_INCLUDE_DIR})
 
 #target_link_libraries (AppSUPERballGPS FileHelpers ${OSG_LIBRARIES})
+#target_link_libraries (AppSUPERballGPS FileHelpers /opt/ros/hydro/lib/librostime.so /opt/ros/hydro/lib/libroscpp.so /opt/ros/hydro/lib/librosconsole.so /opt/ros/hydro/lib/libroscpp_serialization.so ${OSG_LIBRARIES})
+
 target_link_libraries (AppSUPERballGPS FileHelpers /opt/ros/indigo/lib/librostime.so /opt/ros/indigo/lib/libroscpp.so /opt/ros/indigo/lib/librosconsole.so /opt/ros/indigo/lib/libroscpp_serialization.so ${OSG_LIBRARIES})

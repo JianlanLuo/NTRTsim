@@ -2,13 +2,13 @@
  * Copyright © 2012, United States Government, as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All rights reserved.
- * 
+ *
  * The NASA Tensegrity Robotics Toolkit (NTRT) v1 platform is licensed
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0.
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -52,7 +52,7 @@
 #include "std_msgs/UInt16.h"
 #include "gps_agent_pkg/SUPERballState.h"
 #include "gps_agent_pkg/SUPERballStateArray.h"
-#include "superball_msg/TimestampedFloat32.h"
+//#include "superball_msg/TimestampedFloat32.h"
 
 // OSG
 #include <osg/Geometry>
@@ -66,7 +66,7 @@
 #include <osg/Array>
 #include <osg/TexEnv>
 #include <osgGA/NodeTrackerManipulator>
-#include <osgText/Text> 
+#include <osgText/Text>
 
 // The C++ Standard Library
 #include <iostream>
@@ -85,7 +85,7 @@
 class motor_pos_cb_class {
 public:
 	float motor_pos = 0.;
-	void cb(const superball_msg::TimestampedFloat32::ConstPtr& msg){
+	void cb(const std_msgs::Float32::ConstPtr& msg){
 		motor_pos = msg->data;
 	}
 };
@@ -95,7 +95,7 @@ public:
 	std::string action = "";
 	void cb(const std_msgs::String::ConstPtr& msg){
 		action = msg->data;
-	}	
+	}
 };
 
 class timestep_cb_class {
@@ -166,17 +166,17 @@ osg::Node* createGroundPlane() {
 
     osg::ref_ptr<osg::Texture2D> checkTexture = new osg::Texture2D;
     // protect from being optimized away as static state:
-    checkTexture->setDataVariance(osg::Object::DYNAMIC); 
+    checkTexture->setDataVariance(osg::Object::DYNAMIC);
     checkTexture->setImage(checkImage.get());
 
     // Tell the texture to repeat
     checkTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::REPEAT);
     checkTexture->setWrap(osg::Texture::WRAP_T, osg::Texture::REPEAT);
 
-    // Create a new StateSet with default settings: 
+    // Create a new StateSet with default settings:
     osg::ref_ptr<osg::StateSet> groundPlaneStateSet = new osg::StateSet();
 
-    // Assign texture unit 0 of our new StateSet to the texture 
+    // Assign texture unit 0 of our new StateSet to the texture
     // we just created and enable the texture.
     groundPlaneStateSet->setTextureAttributeAndModes(0, checkTexture.get(), osg::StateAttribute::ON);
 
@@ -199,7 +199,7 @@ osg::Node* createGroundPlane() {
 
     osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
     groundPlaneGeometry->setVertexArray(vertices.get());
-    
+
     osg::ref_ptr<osg::Vec2Array> texCoords = new osg::Vec2Array;
     groundPlaneGeometry->setTexCoordArray(0, texCoords.get());
 
@@ -238,7 +238,7 @@ int main(int argc, char** argv)
     const tgBoxGround::Config groundConfig(btVector3(yaw, pitch, roll));
     // the world will delete this
     tgBoxGround* ground = new tgBoxGround(groundConfig);
-    
+
     const tgWorld::Config config(98.1); // gravity, cm/sec^2  Use this to adjust length scale of world.
         // Note, by changing the setting below from 981 to 98.1, we've
         // scaled the world length scale to decimeters not cm.
@@ -247,7 +247,8 @@ int main(int argc, char** argv)
 
     // Second create the view
     const double timestep_physics = 0.001; // Seconds
-    const double timestep_graphics = 1.f/60.f; // Seconds
+    // const double timestep_graphics = 1.f/60.f; // Seconds
+		const double timestep_graphics = 1.0/1.0; // Seconds
     tgSimView view(world, timestep_physics, timestep_graphics); //no graphics
 
     // Third create the simulation
@@ -294,7 +295,7 @@ int main(int argc, char** argv)
 
     // Finally, add out model to the simulation
     simulation.addModel(myModel);
- 
+
     //set up ROS publishers and subscribers
     //create subscribers for motor positions
     std::vector<ros::Subscriber> motor_pos_sub;
@@ -331,9 +332,9 @@ int main(int argc, char** argv)
 
     // Run until the user stops the simulation
     bool publish_state_update = false;
-    std::vector <tgRod*> rods = myModel->find<tgRod>("rod"); 
+    std::vector <tgRod*> rods = myModel->find<tgRod>("rod");
     // This is added to support Ali's Model
-    std::vector <tgRod*> rodmps = myModel->find<tgRod>("rodmp"); 
+    std::vector <tgRod*> rodmps = myModel->find<tgRod>("rodmp");
     double motor_targets[12];
 
     // Set up some plotting and rendering
@@ -404,12 +405,12 @@ int main(int argc, char** argv)
             n.getParam("/bottom_face",bottom_face);
             myModel->rotate(bottom_face);
             simulation.reset();
-	    rods = myModel->find<tgRod>("rod"); 
-        } 
+	    rods = myModel->find<tgRod>("rod");
+        }
 
         //do we need to run a number of simulation steps?
         else if (step_cb.timesteps>0) {
-            std::cout << "advancing simulation " << step_cb.timesteps << "ms" << std::endl;
+            // std::cout << "advancing simulation " << step_cb.timesteps << "ms" << std::endl; // FIXME
             publish_state_update = true;
             const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
             //double cur_pos, vel_step;
@@ -440,7 +441,7 @@ int main(int argc, char** argv)
                     if(tmp_motor_pos == 0.0){
                         temp_motor_targets[i] = motor_targets[i];
                     }
-		    std::cout << i << "\tpos: " << springCables[i]->getRestLength() << "\ttarget_pos: " << temp_motor_targets[i] << "\ttarget vel: " << motor_pos_cb[i]->motor_pos << "\ttension: " <<springCables[i]->getTension() <<"\n";		
+		    std::cout << i << "\tpos: " << springCables[i]->getRestLength() << "\ttarget_pos: " << temp_motor_targets[i] << "\ttarget vel: " << motor_pos_cb[i]->motor_pos << "\ttension: " <<springCables[i]->getTension() <<"\n";
                     //DOES NOT WORK!!!
                     cur_pos = springCables[i]->getRestLength();
                     vel_step = motor_pos_cb[i]->motor_pos*step_cb.timesteps/1000.;
@@ -455,10 +456,10 @@ int main(int argc, char** argv)
 		} else {*/
                     // Changed motor_targets to match the real robot's input commands
                     temp_motor_targets[i] = motor_targets[i];
-		    std::cout << i << "\tpos: " << springCables[i]->getRestLength() << "\ttarget_pos: " << temp_motor_targets[i] << "\ttarget vel: " << motor_pos_cb[i]->motor_pos << "\ttension: " <<springCables[i]->getTension() <<"\n";		
+		    // std::cout << i << "\tpos: " << springCables[i]->getRestLength() << "\ttarget_pos: " << temp_motor_targets[i] << "\ttarget vel: " << motor_pos_cb[i]->motor_pos << "\ttension: " <<springCables[i]->getTension() <<"\n";  //FIXME
                 //}
             }
-            std::cout<<std::endl;
+            // std::cout<<std::endl; //FIXME
             pTC->setTargetLengths(temp_motor_targets);
 
             simulation.run(step_cb.timesteps);
@@ -470,7 +471,7 @@ int main(int argc, char** argv)
             publish_state_update = false;
             gps_agent_pkg::SUPERballStateArray state_msg;
             const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
-            //state_msg.header.frame_id = "/base"; 
+            //state_msg.header.frame_id = "/base";
 
             // Used in determining current robot face
             int bottom_triangle[3] = {0,0,0};
@@ -530,17 +531,17 @@ int main(int argc, char** argv)
                             current_face = i;
                         }
             }
-            std::cout << "Current Face:" << "\n";
+            // std::cout << "Current Face:" << "\n"; //FIXME
             std::stringstream ss;
             ss << "(" << node_to_face[current_face][0] << ", " << node_to_face[current_face][1] << ", " << node_to_face[current_face][2] << ")";
             std_msgs::String face_msg;
             face_msg.data = ss.str();
             face_pub.publish(face_msg);
-            std::cout << "(" << bottom_triangle[0] << ", " << bottom_triangle[1] << ", " << bottom_triangle[2] << ") " << current_face << "\n";
-            
+            // std::cout << "(" << bottom_triangle[0] << ", " << bottom_triangle[1] << ", " << bottom_triangle[2] << ") " << current_face << "\n"; //FIXME
+
             // Publish the current state of the robot
-            //robot_state_pub_gps.publish(state_msg);
-            robot_state_pub_matlab.publish(state_msg);
+            robot_state_pub_gps.publish(state_msg);
+            //robot_state_pub_matlab.publish(state_msg);
     	}
 
         for (unsigned i=0; i<6; ++i) {
@@ -564,7 +565,7 @@ int main(int argc, char** argv)
         }
 
 	if((ros::Time::now()-last_frame).toSec()>0.1){
-        	m_viewer.frame();
+        m_viewer.frame();
 		last_frame = ros::Time::now();
 	}
     }

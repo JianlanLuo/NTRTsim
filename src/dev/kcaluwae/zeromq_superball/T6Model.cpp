@@ -86,7 +86,7 @@ namespace
    {
      0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
      0.35,     // radius (length) radius of an endcap
-     0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g 
+     0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
      0.175,      //radius_mp (length) radius of the connecting rod
      998.25,   // stiffnessPassive (kg / sec^2)
      3152.36,  // stiffnessActive (kg / sec^2)
@@ -97,8 +97,8 @@ namespace
      0.99,      // friction (unitless)
      0.01,     // rollFriction (unitless)
      0.0,      // restitution (?)
-     100.0,    // pretension -> set to 
-     100.0,   // pretension -> set to 
+     100.0,    // pretension -> set to
+     100.0,   // pretension -> set to
      0,			// History logging (boolean)
      4000,   // maxTens
      2,    // targetVelocity
@@ -154,16 +154,16 @@ void T6Model::addNodes(tgStructure& s)
     barLength*0.5   barSpacing       0;
    -barLength*0.5   barSpacing       0;
    -barSpacing      0                barLength*0.5;
-   -barSpacing      0               -barLength*0.5;             %8      
+   -barSpacing      0               -barLength*0.5;             %8
     0               barLength*0.5   -barSpacing;
     0              -barLength*0.5   -barSpacing;
     barLength*0.5  -barSpacing       0;
    -barLength*0.5  -barSpacing       0;
     ];
 
-*/   
+*/
 
-// **** This matches the robot. "Z" is negated from what is in the UKF solver **** 
+// **** This matches the robot. "Z" is negated from what is in the UKF solver ****
     s.addNode( c.rod_space,    0,              half_length);	// 1
     s.addNode( c.rod_space,    0,             -half_length);	// 2
     s.addNode( 0,              half_length,   -c.rod_space);	// 3
@@ -251,7 +251,7 @@ void T6Model::setup(tgWorld& world)
     // This part is added by Ali to make a more accurate model of SuperBall's Rods
     tgBasicActuator::Config motorConfig(c.stiffnessActive, c.damping, c.pretensionActive, c.hist,
     					    c.maxTens, c.targetVelocity);
-    
+
     //tgKinematicActuator::Config motorConfig(c.stiffnessActive, c.damping, c.pretensionActive, c.motor_radius, c.motor_friction,
     //                    c.motor_inertia, c.backDrivable, c.hist, c.maxTens, c.targetVelocity);
     // Start creating the structure
@@ -262,18 +262,18 @@ void T6Model::setup(tgWorld& world)
     s.move(btVector3(0, (c.rod_length/2)-1, 0));
 
     // Add a rotation. This is needed if the ground slopes too much,
-    // Also rotates the robot to a desired face 
-    
+    // Also rotates the robot to a desired face
+
     // This rotation sets the robot to match the state estimator
     btVector3 rotationPoint = btVector3(0, (c.rod_length/2), 0); // origin
     btVector3 rotationAxis = btVector3(1, 0, 0);  // x-axis
     double rotationAngle = 1.5708;
     s.addRotation(rotationPoint, rotationAxis, rotationAngle);
     // This rotation sets the robot to match the state estimator
-    
+
     if(bottom_face == 1) {
 	    /*********** FACE: 2-4-11 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationPoint = btVector3(0, (c.rod_length/2), 0); // origin
 	    rotationAxis = btVector3(1, 0, 0);  // x-axis
 	    rotationAngle = 3.1416;
@@ -286,10 +286,10 @@ void T6Model::setup(tgWorld& world)
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 2-4-11 ************************/
     }
-    /*************** TO ******************************/ 
+    /*************** TO ******************************/
     else if(bottom_face == 2) {
 	    /*********** FACE: 2-3-5 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationPoint = btVector3(0, (c.rod_length/2), 0); // origin
 	    rotationAxis = btVector3(1, 0, 0);  // x-axis
 	    rotationAngle = 3.1416;
@@ -303,12 +303,17 @@ void T6Model::setup(tgWorld& world)
             rotationAxis = btVector3(0, 1, 0);  // y-axis
             rotationAngle = 1.3708;
             s.addRotation(rotationPoint, rotationAxis, rotationAngle);
+
+      // Rotate the superball so it can flop forward and rightward
+      rotationAxis = btVector3(0, 1, 0);
+	    rotationAngle = -3.1416 / 2;
+	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 2-3-5 ************************/
     }
-    /*************** TO ******************************/ 
+    /*************** TO ******************************/
     else if(bottom_face == 3) {
 	    /*********** FACE: 1-5-9 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationAxis = btVector3(0, 0, 1);  // z-axis
 	    rotationAngle = -0.8;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
@@ -318,24 +323,43 @@ void T6Model::setup(tgWorld& world)
             rotationAxis = btVector3(0, 1, 0);  // y-axis
             rotationAngle = -1.9708;
             s.addRotation(rotationPoint, rotationAxis, rotationAngle);
+
+
+      // Correct the direction
+      rotationAxis = btVector3(0, 1, 0);
+	    rotationAngle = -0.085;
+	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 1-5-9 ************************/
     }
-    /*************** TO ******************************/ 
+    /*************** TO ******************************/
     else if(bottom_face == 4) {
 	    /*********** FACE: 6-8-9 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationAxis = btVector3(0, 0, 1);  // y-axis
 	    rotationAngle = 0.8;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    rotationAxis = btVector3(1, 0, 0);  // x-axis
 	    rotationAngle = 0.6;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
+
+
+
+      // Rotate the superball so it can flop forward and rightward
+      rotationAxis = btVector3(0, 1, 0);
+	    rotationAngle = -3.1416 / 2;
+	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
+
+
+      // Correct the direction
+      rotationAxis = btVector3(0, 1, 0);
+	    rotationAngle = -0.085;
+	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 6-8-9 ************************/
     }
-    /*************** TO ******************************/ 
+    /*************** TO ******************************/
     else if(bottom_face == 5) {
 	    /*********** FACE: 8-10-12 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationAxis = btVector3(0, 0, 1);  // z-axis
 	    rotationAngle = 0.8;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
@@ -345,12 +369,18 @@ void T6Model::setup(tgWorld& world)
             rotationAxis = btVector3(0, 1, 0);  // y-axis
             rotationAngle = -0.8708;
             s.addRotation(rotationPoint, rotationAxis, rotationAngle);
+
+
+      // Correct the direction
+      rotationAxis = btVector3(0, 1, 0);
+	    rotationAngle = -0.17;
+	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 8-10-12 ************************/
     }
-    /*************** TO ******************************/ 
+    /*************** TO ******************************/
     else if(bottom_face == 6) {
 	    /*********** FACE: 4-7-12 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationPoint = btVector3(0, (c.rod_length/2), 0); // origin
 	    rotationAxis = btVector3(1, 0, 0);  // x-axis
 	    rotationAngle = 3.1416;
@@ -364,12 +394,19 @@ void T6Model::setup(tgWorld& world)
             rotationAxis = btVector3(0, 1, 0);  // y-axis
             rotationAngle = 2.2708;
             s.addRotation(rotationPoint, rotationAxis, rotationAngle);
+
+
+
+      // Rotate the superball so it can flop forward and rightward
+      rotationAxis = btVector3(0, 1, 0);
+	    rotationAngle = -3.1416 / 2;
+	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 4-7-12 ************************/
     }
-    /*************** TO ******************************/ 
-    else if(bottom_face == 7) { 
+    /*************** TO ******************************/
+    else if(bottom_face == 7) {
 	    /*********** FACE: 1-10-11 ************************/
-	    /*********** Fully Actuated Face*******************/ 
+	    /*********** Fully Actuated Face*******************/
 	    rotationAxis = btVector3(0, 0, 1);  // y-axis
 	    rotationAngle = -0.8;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
@@ -377,11 +414,11 @@ void T6Model::setup(tgWorld& world)
 	    rotationAngle = -0.6;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 1-10-11 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
     }
     else if( bottom_face == 8) {
 	    /*********** FACE: 3-6-7 ************************/
-	    /*********** Fully Actuated Face*******************/ 
+	    /*********** Fully Actuated Face*******************/
 	    rotationPoint = btVector3(0, (c.rod_length/2), 0); // origin
 	    rotationAxis = btVector3(1, 0, 0);  // x-axis
 	    rotationAngle = 3.1416;
@@ -393,11 +430,11 @@ void T6Model::setup(tgWorld& world)
 	    rotationAngle = -0.6;
 	    s.addRotation(rotationPoint, rotationAxis, rotationAngle);
 	    /*********** FACE: 3-6-7 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
     }
     else {
 	    /*********** FACE: 2-4-11 ************************/
-	    /*************************************************/ 
+	    /*************************************************/
 	    rotationPoint = btVector3(0, (c.rod_length/2), 0); // origin
 	    rotationAxis = btVector3(1, 0, 0);  // x-axis
 	    rotationAngle = 3.1416;

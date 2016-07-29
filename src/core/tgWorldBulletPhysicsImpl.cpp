@@ -2,13 +2,13 @@
  * Copyright © 2012, United States Government, as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All rights reserved.
- * 
+ *
  * The NASA Tensegrity Robotics Toolkit (NTRT) v1 platform is licensed
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0.
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -72,20 +72,20 @@
 class IntermediateBuildProducts
 {
     public:
-        IntermediateBuildProducts(double worldSize) : 
+        IntermediateBuildProducts(double worldSize) :
             corner1 (-worldSize,-worldSize, -worldSize),
             corner2 (worldSize, worldSize, worldSize),
             dispatcher(&collisionConfiguration),
             ghostCallback(),
-#ifndef   MLCP_SOLVER       
+#ifndef   MLCP_SOLVER
 	#if (1) // More acc broadphase - remeber the comma (consider doing ifndef)
 				broadphase(corner1, corner2, 16384)
 	#endif // Broadphase
 #else
 			broadphase(corner1, corner2, 16384),
 			solver(&mlcp)
-#endif //MLCP_SOLVER  
-			
+#endif //MLCP_SOLVER
+
   {
 	  broadphase.getOverlappingPairCache()->setInternalGhostPairCallback(&ghostCallback);
   }
@@ -108,7 +108,7 @@ class IntermediateBuildProducts
 #else
 		btSequentialImpulseConstraintSolver solver;
 #endif
-	
+
 };
 
 tgWorldBulletPhysicsImpl::tgWorldBulletPhysicsImpl(const tgWorld::Config& config,
@@ -121,32 +121,32 @@ tgWorldBulletPhysicsImpl::tgWorldBulletPhysicsImpl(const tgWorld::Config& config
     // Gravitational acceleration is down on the Y axis
     const btVector3 gravityVector(0, -config.gravity, 0);
     m_pDynamicsWorld->setGravity(gravityVector);
-	
+
 	if (!tgCast::cast<tgBulletGround, tgEmptyGround>(ground) && ground != NULL)
 	{
 		m_pDynamicsWorld->addRigidBody(ground->getGroundRigidBody());
 	}
-	
+
 	/*
 	 * These are lines from the old BasicLearningApp.cpp that we aren't using.
 	 * http://bulletphysics.org/mediawiki-1.5.8/index.php/BtContactSolverInfo
 	 */
-    #if (0) 
+    #if (0)
 		// Split impulse is on by default
         m_pDynamicsWorld->getSolverInfo().m_splitImpulse = true;
         m_pDynamicsWorld->getSolverInfo().m_splitImpulsePenetrationThreshold = -0.02;
-        
+
         // Default is 10 - increases runtime but decreases odds of penetration
         // Makes tetraspine sine waves more accurate and static test less accurate
         m_pDynamicsWorld->getSolverInfo().m_numIterations = 20;
-        
+
         // Ground contact params:
         m_pDynamicsWorld->getSolverInfo().m_erp = 0.8;
-        
-    #endif	
-    
 
-    
+    #endif
+
+
+
     // Postcondition
     assert(invariant());
 }
@@ -179,7 +179,7 @@ tgWorldBulletPhysicsImpl::~tgWorldBulletPhysicsImpl()
 
     // Delete all the collision shapes. This can be done at any time.
     const size_t ncs = m_collisionShapes.size();
-    
+
     for (size_t i = 0; i < ncs; ++i) { delete m_collisionShapes[i]; }
 
     delete m_pDynamicsWorld;
@@ -193,16 +193,16 @@ tgWorldBulletPhysicsImpl::~tgWorldBulletPhysicsImpl()
  * @return a pointer to a new instance of a btSoftRigidDynamicsWorld
  */
 btDynamicsWorld* tgWorldBulletPhysicsImpl::createDynamicsWorld() const
-{    
-   
+{
+
   btSoftRigidDynamicsWorld* const result =
     new btSoftRigidDynamicsWorld(&m_pIntermediateBuildProducts->dispatcher,
                  &m_pIntermediateBuildProducts->broadphase,
-                 &m_pIntermediateBuildProducts->solver, 
+                 &m_pIntermediateBuildProducts->solver,
                  &m_pIntermediateBuildProducts->collisionConfiguration);
-#ifdef MLCPSOLVER	
+#ifdef MLCPSOLVER
 		result ->getSolverInfo().m_minimumSolverBatchSize = 1;//for direct solver it is better to have a small A matrix
-#endif	
+#endif
   return result;
 }
 
@@ -215,6 +215,7 @@ void tgWorldBulletPhysicsImpl::step(double dt)
     const int maxSubSteps = 1;
     const btScalar fixedTimeStep = dt;
     m_pDynamicsWorld->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
+    // m_pDynamicsWorld->stepSimulation(timeStep, 0, fixedTimeStep);
 
     // Postcondition
     assert(invariant());
@@ -222,10 +223,10 @@ void tgWorldBulletPhysicsImpl::step(double dt)
 
 void tgWorldBulletPhysicsImpl::addCollisionShape(btCollisionShape* pShape)
 {
-#ifndef BT_NO_PROFILE 
+#ifndef BT_NO_PROFILE
     BT_PROFILE("addCollisionShape");
-#endif //BT_NO_PROFILE   	
-	
+#endif //BT_NO_PROFILE
+
     if (pShape)
     {
         m_collisionShapes.push_back(pShape);
@@ -237,10 +238,10 @@ void tgWorldBulletPhysicsImpl::addCollisionShape(btCollisionShape* pShape)
 
 void tgWorldBulletPhysicsImpl::deleteCollisionShape(btCollisionShape* pShape)
 {
-#ifndef BT_NO_PROFILE 
+#ifndef BT_NO_PROFILE
     BT_PROFILE("deleteCollisionShape");
 #endif //BT_NO_PROFILE
-	
+
     if (pShape)
     {
 		btCompoundShape* cShape = tgCast::cast<btCollisionShape, btCompoundShape>(pShape);
@@ -264,4 +265,3 @@ bool tgWorldBulletPhysicsImpl::invariant() const
 {
     return (m_pDynamicsWorld != 0);
 }
-
