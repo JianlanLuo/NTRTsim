@@ -541,7 +541,7 @@ int main(int argc, char** argv)
 
             // Publish the current state of the robot
             robot_state_pub_gps.publish(state_msg);
-            //robot_state_pub_matlab.publish(state_msg);
+            robot_state_pub_matlab.publish(state_msg);
     	}
 
         for (unsigned i=0; i<6; ++i) {
