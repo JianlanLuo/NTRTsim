@@ -28,6 +28,7 @@
 
 // This library
 #include "core/terrain/tgBoxGround.h"
+#include "core/terrain/tgHillyGround.h"
 #include "core/tgBasicActuator.h"
 #include "core/tgKinematicActuator.h"
 #include "core/tgModel.h"
@@ -238,10 +239,12 @@ int main(int argc, char** argv)
     const tgBoxGround::Config groundConfig(btVector3(yaw, pitch, roll));
     // the world will delete this
     tgBoxGround* ground = new tgBoxGround(groundConfig);
+		// tgHillyGround* ground = new tgHillyGround();
 
     const tgWorld::Config config(98.1); // gravity, cm/sec^2  Use this to adjust length scale of world.
         // Note, by changing the setting below from 981 to 98.1, we've
         // scaled the world length scale to decimeters not cm.
+		// const tgWorld::Config config(98.1 * 2);
 
     tgWorld world(config, ground);
 
