@@ -426,7 +426,7 @@ int main(int argc, char** argv)
                 if(tmp_motor_pos >= 45.0){
                     tmp_motor_pos = 45.0;
                 }
-               	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
+               	motor_targets[i] = (1.05 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
 
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
