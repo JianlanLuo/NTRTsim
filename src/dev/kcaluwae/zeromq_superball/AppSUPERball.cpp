@@ -158,7 +158,7 @@ osg::Image *createCheckImage() {
     return img;
 }
 
-osg::Node* createGroundPlane() {
+osg::Node* createGroundPlane(tgHillyGround *ground) {
     // Create the geode
     osg::Geode* groundPlaneGeode_ = new osg::Geode;
 
@@ -171,54 +171,68 @@ osg::Node* createGroundPlane() {
     checkTexture->setImage(checkImage.get());
 
     // Tell the texture to repeat
-    checkTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::REPEAT);
-    checkTexture->setWrap(osg::Texture::WRAP_T, osg::Texture::REPEAT);
+    // checkTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::REPEAT);
+    // checkTexture->setWrap(osg::Texture::WRAP_T, osg::Texture::REPEAT);
 
     // Create a new StateSet with default settings:
     osg::ref_ptr<osg::StateSet> groundPlaneStateSet = new osg::StateSet();
 
     // Assign texture unit 0 of our new StateSet to the texture
     // we just created and enable the texture.
-    groundPlaneStateSet->setTextureAttributeAndModes(0, checkTexture.get(), osg::StateAttribute::ON);
+    // groundPlaneStateSet->setTextureAttributeAndModes(0, checkTexture.get(), osg::StateAttribute::ON);
 
     // Texture mode
-    osg::TexEnv* texEnv = new osg::TexEnv;
-    texEnv->setMode(osg::TexEnv::DECAL); // (osg::TexEnv::MODULATE);
-    groundPlaneStateSet->setTextureAttribute(0, texEnv);
+    // osg::TexEnv* texEnv = new osg::TexEnv;
+    // texEnv->setMode(osg::TexEnv::DECAL); // (osg::TexEnv::MODULATE);
+    // groundPlaneStateSet->setTextureAttribute(0, texEnv);
 
     // Associate this state set with our Geode
     groundPlaneGeode_->setStateSet(groundPlaneStateSet.get());
 
     // Create the ground plane
     osg::ref_ptr<osg::Geometry> groundPlaneGeometry = new osg::Geometry();
-    double groundPlaneSquareSpacing_ = 1;
+    // double groundPlaneSquareSpacing_ = 1;
 
-    const double infty=100;
-
-    const double metresPerTile=2*groundPlaneSquareSpacing_;
-    const double texCoordExtreme=2*infty/metresPerTile;
+    // const double infty=100;
+		//
+    // const double metresPerTile=2*groundPlaneSquareSpacing_;
+    // const double texCoordExtreme=2*infty/metresPerTile;
 
     osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
     groundPlaneGeometry->setVertexArray(vertices.get());
 
-    osg::ref_ptr<osg::Vec2Array> texCoords = new osg::Vec2Array;
-    groundPlaneGeometry->setTexCoordArray(0, texCoords.get());
+		int idx;
+		for (std::size_t i = 0; i < ground->getTriangleCount() * 3; i++) {
+				idx = ground->getIndices()[i];
+				vertices->push_back(osg::Vec3d(
+						ground->getVertices()[idx].x(),
+						ground->getVertices()[idx].z(),
+						-ground->getVertices()[idx].y() + 0.5
+				));
+		}
 
-    vertices->push_back(osg::Vec3d(-infty, -infty, 0));
-    texCoords->push_back(osg::Vec2(0, 0));
-    vertices->push_back(osg::Vec3d(infty, -infty, 0));
-    texCoords->push_back(osg::Vec2(texCoordExtreme, 0));
-    vertices->push_back(osg::Vec3d(infty,  infty, 0));
-    texCoords->push_back(osg::Vec2(texCoordExtreme, texCoordExtreme));
-    vertices->push_back(osg::Vec3d(-infty,  infty, 0));
-    texCoords->push_back(osg::Vec2(0, texCoordExtreme));
+		groundPlaneGeometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLES, 0, ground->getTriangleCount() * 3));
 
-    osg::ref_ptr<osg::DrawElementsUInt> quad = new osg::DrawElementsUInt(osg::PrimitiveSet::QUADS);
-    for (uint i=0; i < vertices->size(); i++) {
-        quad->push_back(i);
-    }
+		osg::ref_ptr<osg::Vec3Array> norms = new osg::Vec3Array;
+		groundPlaneGeometry->setNormalArray(norms.get());
 
-    groundPlaneGeometry->addPrimitiveSet(quad.get());
+		// norms->push_back(osg::Vec3d(0.0f, -1.0f, 0.0f));
+
+		btVector3 v1, v2, v3, v_norm;
+		for (std::size_t i = 0; i < ground->getTriangleCount(); i++) {
+				v1 = ground->getVertices()[ground->getIndices()[i * 3]];
+				v2 = ground->getVertices()[ground->getIndices()[i * 3 + 1]];
+				v3 = ground->getVertices()[ground->getIndices()[i * 3 + 2]];
+
+				v_norm = (v2 - v1).cross(v3 - v1);
+				norms->push_back(osg::Vec3d(v_norm.x(), v_norm.z(), -v_norm.y()));
+				norms->push_back(osg::Vec3d(v_norm.x(), v_norm.z(), -v_norm.y()));
+				norms->push_back(osg::Vec3d(v_norm.x(), v_norm.z(), -v_norm.y()));
+
+		}
+		groundPlaneGeometry->setNormalBinding(osg::Geometry::BIND_PER_VERTEX);
+		groundPlaneGeometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLES, 0, ground->getTriangleCount() * 3));
+
 
     groundPlaneGeode_->addDrawable(groundPlaneGeometry.get());
     return groundPlaneGeode_;
@@ -347,7 +361,7 @@ int main(int argc, char** argv)
     osgViewer::Viewer m_viewer;
     std::vector<osg::MatrixTransform*> tfs;
     m_root->addChild(m_robot);
-    m_root->addChild(createGroundPlane());
+    m_root->addChild(createGroundPlane(ground));
     // Changed to support Ali's Model
     for (unsigned i=0; i < 6; ++i) {
         osg::MatrixTransform* tf = new osg::MatrixTransform;

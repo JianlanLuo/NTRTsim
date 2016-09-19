@@ -120,6 +120,26 @@ class tgHillyGround : public tgBulletGround
          */
         btCollisionShape* hillyCollisionShape();
 
+        /**
+         * Get triangle vertices
+         */
+        btVector3 * getVertices();
+
+        /**
+         * Get vertex count
+         */
+        std::size_t getVertexCount();
+
+        /**
+         * Get indices
+         */
+        int * getIndices();
+
+        /**
+         * Get index count
+         */
+        std::size_t getTriangleCount();
+
     private:
         /** Store the configuration data for use later */
         Config m_config;
@@ -149,6 +169,8 @@ class tgHillyGround : public tgBulletGround
         btTriangleIndexVertexArray* m_pMesh;
         btVector3 * m_vertices;
         int * m_pIndices;
+        std::size_t vertexCount;
+        std::size_t triangleCount;
 
 };
 

@@ -2,13 +2,13 @@
  * Copyright © 2012, United States Government, as represented by the
  * Administrator of the National Aeronautics and Space Administration.
  * All rights reserved.
- * 
+ *
  * The NASA Tensegrity Robotics Toolkit (NTRT) v1 platform is licensed
  * under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0.
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -120,17 +120,17 @@ btRigidBody* tgHillyGround::getGroundRigidBody() const
 
     assert(pGroundBody);
     return pGroundBody;
-}  
+}
 
 btCollisionShape* tgHillyGround::hillyCollisionShape() {
     btCollisionShape * pShape = 0;
     // The number of vertices in the mesh
     // Hill Paramenters: Subject to Change
-    const std::size_t vertexCount = m_config.m_nx * m_config.m_ny;
+    vertexCount = m_config.m_nx * m_config.m_ny;
 
     if (vertexCount > 0) {
         // The number of triangles in the mesh
-        const std::size_t triangleCount = 2 * (m_config.m_nx - 1) * (m_config.m_ny - 1);
+        triangleCount = 2 * (m_config.m_nx - 1) * (m_config.m_ny - 1);
 
         // A flattened array of all vertices in the mesh
         m_vertices = new btVector3[vertexCount];
@@ -156,14 +156,14 @@ btCollisionShape* tgHillyGround::hillyCollisionShape() {
     }
 
     assert(pShape);
-    return pShape; 
+    return pShape;
 }
 
 btTriangleIndexVertexArray *tgHillyGround::createMesh(std::size_t triangleCount, int indices[], std::size_t vertexCount, btVector3 vertices[]) {
     const int vertexStride = sizeof(btVector3);
     const int indexStride = 3 * sizeof(int);
 
-    btTriangleIndexVertexArray* const pMesh = 
+    btTriangleIndexVertexArray* const pMesh =
         new btTriangleIndexVertexArray(triangleCount,
                 indices,
                 indexStride,
@@ -175,7 +175,7 @@ btTriangleIndexVertexArray *tgHillyGround::createMesh(std::size_t triangleCount,
 
 btCollisionShape *tgHillyGround::createShape(btTriangleIndexVertexArray *pMesh) {
     const bool useQuantizedAabbCompression = true;
-    btCollisionShape *const pShape = 
+    btCollisionShape *const pShape =
         new btBvhTriangleMeshShape(pMesh, useQuantizedAabbCompression);
     return pShape;
 }
@@ -211,3 +211,18 @@ void tgHillyGround::setIndices(int indices[]) {
     }
 }
 
+btVector3 * tgHillyGround::getVertices() {
+    return m_vertices;
+}
+
+std::size_t tgHillyGround::getVertexCount() {
+    return vertexCount;
+}
+
+int * tgHillyGround::getIndices() {
+    return m_pIndices;
+}
+
+std::size_t tgHillyGround::getTriangleCount() {
+    return triangleCount;
+}
