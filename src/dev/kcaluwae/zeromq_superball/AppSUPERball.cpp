@@ -205,9 +205,9 @@ osg::Node* createGroundPlane(tgHillyGround *ground) {
 		for (std::size_t i = 0; i < ground->getTriangleCount() * 3; i++) {
 				idx = ground->getIndices()[i];
 				vertices->push_back(osg::Vec3d(
-						ground->getVertices()[idx].x(),
-						ground->getVertices()[idx].z(),
-						ground->getVertices()[idx].y()
+						ground->getVertices()[idx].x() / 10,
+						ground->getVertices()[idx].z() / 10,
+						ground->getVertices()[idx].y() / 10
 				));
 		}
 
