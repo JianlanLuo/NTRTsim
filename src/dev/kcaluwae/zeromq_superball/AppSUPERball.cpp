@@ -207,7 +207,7 @@ osg::Node* createGroundPlane(tgHillyGround *ground) {
 				vertices->push_back(osg::Vec3d(
 						ground->getVertices()[idx].x(),
 						ground->getVertices()[idx].z(),
-						-ground->getVertices()[idx].y() + 0.5
+						ground->getVertices()[idx].y()
 				));
 		}
 
@@ -218,18 +218,41 @@ osg::Node* createGroundPlane(tgHillyGround *ground) {
 
 		// norms->push_back(osg::Vec3d(0.0f, -1.0f, 0.0f));
 
+		std::vector<btVector3> raw_norms;
+		for (std::size_t i = 0; i < ground->getVertexCount(); i++) {
+			  raw_norms.push_back(btVector3(0, 0, 0));
+		}
+
+		int idx_1, idx_2, idx_3;
 		btVector3 v1, v2, v3, v_norm;
 		for (std::size_t i = 0; i < ground->getTriangleCount(); i++) {
-				v1 = ground->getVertices()[ground->getIndices()[i * 3]];
-				v2 = ground->getVertices()[ground->getIndices()[i * 3 + 1]];
-				v3 = ground->getVertices()[ground->getIndices()[i * 3 + 2]];
+			  idx_1 = ground->getIndices()[i * 3];
+				idx_2 = ground->getIndices()[i * 3 + 1];
+				idx_3 = ground->getIndices()[i * 3 + 2];
+				v1 = ground->getVertices()[idx_1];
+				v2 = ground->getVertices()[idx_2];
+				v3 = ground->getVertices()[idx_3];
 
 				v_norm = (v2 - v1).cross(v3 - v1);
-				norms->push_back(osg::Vec3d(v_norm.x(), v_norm.z(), -v_norm.y()));
-				norms->push_back(osg::Vec3d(v_norm.x(), v_norm.z(), -v_norm.y()));
-				norms->push_back(osg::Vec3d(v_norm.x(), v_norm.z(), -v_norm.y()));
+				raw_norms[idx_1] += v_norm;
+				raw_norms[idx_2] += v_norm;
+				raw_norms[idx_3] += v_norm;
 
 		}
+		for (std::size_t i = 0; i < ground->getVertexCount(); i++) {
+			  raw_norms[i] = -raw_norms[i].normalized();
+	  }
+
+		for (std::size_t i = 0; i < ground->getTriangleCount() * 3; i++) {
+				idx = ground->getIndices()[i];
+				norms->push_back(osg::Vec3d(
+						raw_norms[idx].x(),
+						raw_norms[idx].z(),
+						raw_norms[idx].y()
+				));
+		}
+
+
 		groundPlaneGeometry->setNormalBinding(osg::Geometry::BIND_PER_VERTEX);
 		groundPlaneGeometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLES, 0, ground->getTriangleCount() * 3));
 
