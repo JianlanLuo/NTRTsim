@@ -13,7 +13,7 @@ subdirs(
     models
     controllers
     dev
-    examples
+    #examples
 )
 
 add_definitions(
