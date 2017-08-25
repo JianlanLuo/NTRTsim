@@ -45,7 +45,7 @@ int bottom_face = 0;
 
 namespace
 {
-    // see tgBasicActuator and tgRod for a descripton of these rod parameters
+    // see tgBasicActuator and tgRod for a description of these rod parameters
     // (specifically, those related to the motor moving the strings.)
     // NOTE that any parameter that depends on units of length will scale
     // with the current gravity scaling. E.g., with gravity as 98.1,
@@ -213,20 +213,20 @@ void T6Model::addActuators(tgStructure& s)
         s.addPair(11,   3,      "actuated");
 
         //Passive cables (triangle 1 - large circle)
-        s.addPair(0,    8,      "passive");
-        s.addPair(0,    4,      "passive");
-        s.addPair(10,   1,      "passive");
-        s.addPair(10,   3,      "passive");
-        s.addPair(9,    11,     "passive");
-        s.addPair(9,    7,      "passive");
+        s.addPair(0,    8,      "actuated");
+        s.addPair(0,    4,      "actuated");
+        s.addPair(10,   1,      "actuated");
+        s.addPair(10,   3,      "actuated");
+        s.addPair(9,    11,     "actuated");
+        s.addPair(9,    7,      "actuated");
 
         //Passive cables (triangle 2 - large circle)
-        s.addPair(2,    4,      "passive");
-        s.addPair(2,    1,      "passive");
-        s.addPair(6,    3,      "passive");
-        s.addPair(6,    11,     "passive");
-        s.addPair(5,    7,      "passive");
-        s.addPair(5,    8,      "passive");
+        s.addPair(2,    4,      "actuated");
+        s.addPair(2,    1,      "actuated");
+        s.addPair(6,    3,      "actuated");
+        s.addPair(6,    11,     "actuated");
+        s.addPair(5,    7,      "actuated");
+        s.addPair(5,    8,      "actuated");
 
 }
 const void T6Model::rotate(int face)
