@@ -304,7 +304,7 @@ int main(int argc, char** argv)
         unsigned board_id = i%2;
         unsigned bbb, sub_index;
         if (board_id==0) {
-            bbb = i+2;
+            bbb = i+4;
             board_id = 0x71;
             sub_index = 0x2;
         } else {
