@@ -300,11 +300,11 @@ int main(int argc, char** argv)
     //create subscribers for motor positions
     std::vector<ros::Subscriber> motor_pos_sub;
     std::vector<motor_pos_cb_class*> motor_pos_cb;
-    for (unsigned i=0; i<12; ++i) {
+    for (unsigned i=0; i<24; ++i) {
         unsigned board_id = i%2;
         unsigned bbb, sub_index;
         if (board_id==0) {
-            bbb = i+4;
+            bbb = i+2;
             board_id = 0x71;
             sub_index = 0x2;
         } else {
@@ -418,7 +418,7 @@ int main(int argc, char** argv)
             double motor_speed = 26.0 * motor_power; // Currently 26 cm/s is maximum speed of SUPERball's motors
             //update motor target values
             //std::cout << "Control Mode: " << control_mode << std::endl;
-            for (unsigned i=0; i<12; ++i) {
+            for (unsigned i=0; i<24; ++i) {
                 double tmp_motor_pos = fabs(motor_pos_cb[i]->motor_pos);
                 if(tmp_motor_pos >= 45.0){
                     tmp_motor_pos = 45.0;
