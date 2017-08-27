@@ -60,38 +60,38 @@ namespace
     // "mp" stands for middle part. The specs without this extension are for end caps.
     const struct Config
     {
-        double density;
+        double density;  #weight: 28g both endcaps
         double radius;
-        double density_mp;
+        double density_mp;  #weight: 400g
         double radius_mp;
-        double stiffnessPassive;
-	double stiffnessActive;
-        double damping;
+        double stiffnessPassive;    #assembled
+	double stiffnessActive;   #assembled
+        double damping;   #look at motor manual
         double rod_length;
         double rod_space;
         double rod_length_mp;
-        double friction;
-        double rollFriction;
+        double friction;    #assembled
+        double rollFriction;   #leave
         double restitution;
         double pretensionPassive;
 	double pretensionActive;
         bool   hist;
-        double maxTens;
+        double maxTens;   #constraint
         double targetVelocity;
         double motor_radius;
-        double motor_friction;
-        double motor_inertia;
-        bool   backDrivable;
+        double motor_friction;  #motor manual
+        double motor_inertia;   #motor manual
+        bool   backDrivable;  
     } c =
    {
      0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
-     0.35,     // radius (length) radius of an endcap
-     0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
-     0.175,      //radius_mp (length) radius of the connecting rod
-     998.25,   // stiffnessPassive (kg / sec^2)
-     3152.36,  // stiffnessActive (kg / sec^2)
+     0.1369,     // radius (length) radius of an endcap   #DONE
+     0.208,      // density_mp (kg / length^3) weight of connecting rod: 
+     0.0955,      //radius_mp (length) radius of the connecting rod   #Done
+     998.25,   // stiffnessPassive (kg / sec^2)     
+     3152.36,  // stiffnessActive (kg / sec^2)   #WAIT ON THIS???
      200.0,    // damping (kg / sec)
-     17.4,     // rod_length (length)
+     10.033,     // rod_length (length)  #DONE
      17.4/4,//4.5,      // rod_space (length)
      17.4/2,        // rod_length_mp (length)
      0.99,      // friction (unitless)
