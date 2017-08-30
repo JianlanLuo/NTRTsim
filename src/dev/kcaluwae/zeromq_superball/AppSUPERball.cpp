@@ -425,7 +425,7 @@ int main(int argc, char** argv)
                 }
                	motor_targets[i] = (0.1 - (tmp_motor_pos * 0.0009))*10.0; // Convert radians back to length based on SUPERball motor spindle
 								motor_targets[i] = 20;
-								std::cout << motor_targets[i];
+								std::cout << motor_targets[i]<<std::endl;
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
                         temp_motor_targets[i] += motor_speed / (1000.0/step_cb.timesteps);
