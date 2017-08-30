@@ -87,18 +87,18 @@ namespace
      0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
      0.35,//0.1369,     // radius (length) radius of an endcap   #DONE
      0.208,      // density_mp (kg / length^3) weight of connecting rod: 
-     0.175,//0.0955,      //radius_mp (length) radius of the connecting rod   #Done
-     998.25,   // stiffnessPassive (kg / sec^2)  #TODO   
-     3152.36,  // stiffnessActive (kg / sec^2)   #WAIT ON THIS???
+     0.0955,//0.0955,      //radius_mp (length) radius of the connecting rod   #Done
+     258,   // stiffnessPassive (kg / sec^2)  #TODO   
+     258,  // stiffnessActive (kg / sec^2)   #WAIT ON THIS???
      200.0,    // damping (kg / sec)   #TODO from motor need to figure out which motors used; jianlan emailing drew
-     17.4,//10.033,     // rod_length (length)  #DONE
-     17.4/4,//10.033/4,//4.5,      // rod_space (length)  #they divided rod length by four
-     17.4/2,//10.033/2,        // rod_length_mp (length)   #they divided rod length by two
+     10.033,     // rod_length (length)  #DONE
+     10.033/4,//4.5,      // rod_space (length)  #they divided rod length by four
+     10.033/2,        // rod_length_mp (length)   #they divided rod length by two
      0.99,      // friction (unitless)  #ask drew how measured
      0.01,     // rollFriction (unitless)  #ask drew how measured
      0.0,      // restitution (?)
-     100.0,    // pretension -> set to  #ask drew
-     100.0,   // pretension -> set to  #ask drew
+     4.79,    // pretension -> set to  #might want to scale this by 9.8 gravity
+     4.79,   // pretension -> set to  #same as above
      0,			// History logging (boolean)
      4000,   // maxTens  #ask drew
      2,    // targetVelocity

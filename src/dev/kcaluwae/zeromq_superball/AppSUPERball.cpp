@@ -391,7 +391,7 @@ int main(int argc, char** argv)
                               1,5,9,
                               1,10,11};
     ros::Publisher face_pub = n.advertise<std_msgs::String>("/imu_face_string_sim", 1);
-    double temp_motor_targets[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+    double temp_motor_targets[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     while (ros::ok()) {
         //get new ROS messages
@@ -509,7 +509,7 @@ int main(int argc, char** argv)
 
             }
 
-	    // determin which face in on the "gound"
+	    // determine which face is on the "ground"
             for(unsigned j=0; j<3; j++){
                 double small = pos_array[0];
                 unsigned index = 0;
