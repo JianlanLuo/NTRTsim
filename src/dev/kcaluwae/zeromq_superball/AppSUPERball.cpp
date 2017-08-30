@@ -335,7 +335,7 @@ int main(int argc, char** argv)
     std::vector <tgRod*> rods = myModel->find<tgRod>("rod");
     // This is added to support Ali's Model
     std::vector <tgRod*> rodmps = myModel->find<tgRod>("rodmp");
-    double motor_targets[12];
+    double motor_targets[24];
 
     // Set up some plotting and rendering
     osg::ref_ptr<osg::Group> m_root = new osg::Group;
@@ -415,15 +415,15 @@ int main(int argc, char** argv)
             const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
             //double cur_pos, vel_step;
             double motor_power = 0.7; // Percentage of usable motor power
-            double motor_speed = 26.0 * motor_power; // Currently 26 cm/s is maximum speed of SUPERball's motors
+            double motor_speed = 10.0 * motor_power; // Currently 26 cm/s is maximum speed of SUPERball's motors
             //update motor target values
             //std::cout << "Control Mode: " << control_mode << std::endl;
             for (unsigned i=0; i<24; ++i) {
                 double tmp_motor_pos = fabs(motor_pos_cb[i]->motor_pos);
-                if(tmp_motor_pos >= 45.0){
-                    tmp_motor_pos = 45.0;
+                if(tmp_motor_pos >= 22.5){
+                    tmp_motor_pos = 22.5;
                 }
-               	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
+               	motor_targets[i] = (0.45 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
 
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
