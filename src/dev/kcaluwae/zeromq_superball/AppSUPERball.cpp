@@ -503,8 +503,12 @@ int main(int argc, char** argv)
                 pos_array[idx+1] = pos1.getY();
                 const double motor_pos1 = springCables[idx]->getRestLength();
                 const double motor_pos2 = springCables[idx+1]->getRestLength();
+								const double motor_pos3 = springCables[idx+2]->getRestLength();
+								const double motor_pos4 = springCables[idx+3]->getRestLength();
                 state.motor_pos1.data = motor_pos1/10.;//(9.5 - motor_pos1) / 0.09;
                 state.motor_pos2.data = motor_pos2/10.;//(9.5 - motor_pos2) / 0.09;
+								state.motor_pos3.data = motor_pos3/10.;//(9.5 - motor_pos2) / 0.09;
+								state.motor_pos4.data = motor_pos4/10.;//(9.5 - motor_pos2) / 0.09;
                 state_msg.states.push_back(state);
 
             }
