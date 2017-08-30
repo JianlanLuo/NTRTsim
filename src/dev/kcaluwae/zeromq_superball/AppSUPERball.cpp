@@ -415,7 +415,7 @@ int main(int argc, char** argv)
             const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
             //double cur_pos, vel_step;
             double motor_power = 0.7; // Percentage of usable motor power
-            double motor_speed = 10.0 * motor_power; // Currently 26 cm/s is maximum speed of SUPERball's motors
+            double motor_speed = 10.0 * motor_power; //FK this, not used// Currently 26 cm/s is maximum speed of SUPERball's motors
             //update motor target values
             //std::cout << "Control Mode: " << control_mode << std::endl;
             for (unsigned i=0; i<24; ++i) {
@@ -423,8 +423,9 @@ int main(int argc, char** argv)
                 if(tmp_motor_pos >= 22.5){
                     tmp_motor_pos = 22.5;
                 }
-               	motor_targets[i] = (0.45 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
-
+               	motor_targets[i] = (0.1 - (tmp_motor_pos * 0.0009))*10.0; // Convert radians back to length based on SUPERball motor spindle
+								motor_targets[i] = 20;
+								std::cout << motor_targets[i];
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
                         temp_motor_targets[i] += motor_speed / (1000.0/step_cb.timesteps);
