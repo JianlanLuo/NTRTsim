@@ -82,11 +82,11 @@ namespace
         double motor_friction; // #motor manual
         double motor_inertia;   //#motor manual
         bool   backDrivable;
-    } c =
+    } /*c =
    {
      0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
      0.35,//0.1369,     // radius (length) radius of an endcap   #DONE
-     0.258,      //needs to be changed // density_mp (kg / length^3) weight of connecting rod:
+     0.208,      //needs to be changed // density_mp (kg / length^3) weight of connecting rod:
      0.0955,//0.0955,      //radius_mp (length) radius of the connecting rod   #Done
      258,   // stiffnessPassive (kg / sec^2)  #TODO
      258,  // stiffnessActive (kg / sec^2)   #WAIT ON THIS???
@@ -114,7 +114,42 @@ namespace
      // 3000.0,
      // 15.0,
      // 7.5,
-  };
+  };*/
+  c =
+     {
+       0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
+       0.35,     // radius (length) radius of an endcap
+       0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
+       0.175,      //radius_mp (length) radius of the connecting rod
+       998.25,   // stiffnessPassive (kg / sec^2)
+       3152.36,  // stiffnessActive (kg / sec^2)
+       200.0,    // damping (kg / sec)
+       17.4,     // rod_length (length)
+       17.4/4,//4.5,      // rod_space (length)
+       17.4/2,        // rod_length_mp (length)
+       0.99,      // friction (unitless)
+       0.01,     // rollFriction (unitless)
+       0.0,      // restitution (?)
+       100.0,    // pretension -> set to
+       100.0,   // pretension -> set to
+       0,			// History logging (boolean)
+       4000,   // maxTens
+       2,    // targetVelocity
+       0.09, // motor_radius // Spindle radius (length)
+       2*4.24e-5, // motor_friction (kg*(length)^2/sec)
+       4*2.749e-4, // motor_inertia (kg*(length)^2) // Inertia of motor, gearbox, and spindle all together
+       0, // Not backDrivable
+
+       // Use the below values for earlier versions of simulation.
+       // 1.006,
+       // 0.31,
+       // 300000.0,
+       // 3000.0,
+       // 15.0,
+       // 7.5,
+    };
+
+
 } // namespace
 
 T6Model::T6Model() : tgModel()
