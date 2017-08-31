@@ -392,7 +392,11 @@ int main(int argc, char** argv)
                               1,10,11};
     ros::Publisher face_pub = n.advertise<std_msgs::String>("/imu_face_string_sim", 1);
     double temp_motor_targets[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+		/*const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
+		for (unsigned i=0; i<24; ++i){
+				std::cout << springCables[i] ->getRestLength() << std::endl;
 
+		}*/
     while (ros::ok()) {
         //get new ROS messages
         ros::spinOnce();
@@ -413,7 +417,8 @@ int main(int argc, char** argv)
             // std::cout << "advancing simulation " << step_cb.timesteps << "ms" << std::endl; // FIXME
             publish_state_update = true;
             const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
-            //double cur_pos, vel_step;
+						//std::cout << springCables[1] -> getRestLength() << std::endl;
+						//double cur_pos, vel_step;
             double motor_power = 0.7; // Percentage of usable motor power
             double motor_speed = 10.0 * motor_power; //FK this, not used// Currently 26 cm/s is maximum speed of SUPERball's motors
             //update motor target values
@@ -424,8 +429,9 @@ int main(int argc, char** argv)
                     tmp_motor_pos = 22.5;
                 }
                	motor_targets[i] = (0.1 - (tmp_motor_pos * 0.0009))*10.0; // Convert radians back to length based on SUPERball motor spindle
-								motor_targets[i] = 20;
-								std::cout << motor_targets[i]<<std::endl;
+								motor_targets[i] = 5;
+
+								//std::cout << motor_targets[i]<<std::endl;
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
                         temp_motor_targets[i] += motor_speed / (1000.0/step_cb.timesteps);

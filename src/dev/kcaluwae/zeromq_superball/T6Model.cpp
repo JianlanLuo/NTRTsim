@@ -86,7 +86,7 @@ namespace
    {
      0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
      0.35,//0.1369,     // radius (length) radius of an endcap   #DONE
-     0.208,      // density_mp (kg / length^3) weight of connecting rod:
+     0.258,      //needs to be changed // density_mp (kg / length^3) weight of connecting rod:
      0.0955,//0.0955,      //radius_mp (length) radius of the connecting rod   #Done
      258,   // stiffnessPassive (kg / sec^2)  #TODO
      258,  // stiffnessActive (kg / sec^2)   #WAIT ON THIS???
@@ -97,8 +97,8 @@ namespace
      0.99,      // friction (unitless)  #ask drew how measured
      0.01,     // rollFriction (unitless)  #ask drew how measured
      0.0,      // restitution (?)
-     20,//4.79,    // pretension -> set to  #might want to scale this by 9.8 gravity
-     20,//4.79,   // pretension -> set to  #same as above
+     50,//4.79,    // pretension -> set to  #might want to scale this by 9.8 gravity
+     50,//4.79,   // pretension -> set to  #same as above
      0,			// History logging (boolean)
      4000,   // maxTens  #ask drew
      0.2,    // targetVelocity , perv 2 should be changed, tt4 actual between 2cm/s ~ 5cm/s
@@ -496,6 +496,8 @@ void T6Model::onVisit(tgModelVisitor& r)
 
 const std::vector<tgBasicActuator*>& T6Model::getAllActuators() const
 {
+
+
     return allActuators;
 }
 
