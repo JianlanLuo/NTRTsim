@@ -392,11 +392,11 @@ int main(int argc, char** argv)
                               1,10,11};
     ros::Publisher face_pub = n.advertise<std_msgs::String>("/imu_face_string_sim", 1);
     double temp_motor_targets[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-		const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
-		for (unsigned i=0; i<24; ++i){
-				std::cout << springCables[i] ->getRestLength() << std::endl;
+		//const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
+		//for (unsigned i=0; i<24; ++i){
+		//		std::cout << springCables[i] ->getRestLength() << std::endl;
 
-		}
+		//}
     while (ros::ok()) {
         //get new ROS messages
         ros::spinOnce();
@@ -420,7 +420,7 @@ int main(int argc, char** argv)
 						//std::cout << springCables[1] -> getRestLength() << std::endl;
 						//double cur_pos, vel_step;
             double motor_power = 0.7; // Percentage of usable motor power
-            double motor_speed = 10.0 * motor_power; //FK this, not used// Currently 26 cm/s is maximum speed of SUPERball's motors
+            double motor_speed = 26 * motor_power; //FK this, not used// Currently 26 cm/s is maximum speed of SUPERball's motors
             //update motor target values
             //std::cout << "Control Mode: " << control_mode << std::endl;
             for (unsigned i=0; i<24; ++i) {
