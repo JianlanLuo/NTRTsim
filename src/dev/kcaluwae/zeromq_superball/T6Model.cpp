@@ -121,7 +121,7 @@ namespace
        0.35,     // radius (length) radius of an endcap
        0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
        0.175,      //radius_mp (length) radius of the connecting rod
-       998.25,   // stiffnessPassive (kg / sec^2)
+       3152.36,   // stiffnessPassive (kg / sec^2)
        3152.36,  // stiffnessActive (kg / sec^2)
        200.0,    // damping (kg / sec)
        17.4,     // rod_length (length)
