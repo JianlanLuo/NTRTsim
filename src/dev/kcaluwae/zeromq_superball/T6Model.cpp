@@ -281,8 +281,8 @@ void T6Model::setup(tgWorld& world)
 
     /// @todo acceleration constraint was removed on 12/10/14 Replace with tgKinematicActuator as appropreate
     //tgBasicActuator::Config actuatedCableConfig(3100., c.damping, c.pretension, c.hist, c.maxTens, c.targetVelocity);
-    tgBasicActuator::Config passiveCableConfig(c.stiffnessPassive, c.damping, c.pretensionPassive, c.hist,
-					    c.maxTens, c.targetVelocity);
+    //tgBasicActuator::Config passiveCableConfig(c.stiffnessPassive, c.damping, c.pretensionPassive, c.hist,
+					   // c.maxTens, c.targetVelocity);
     // This part is added by Ali to make a more accurate model of SuperBall's Rods
     tgBasicActuator::Config motorConfig(c.stiffnessActive, c.damping, c.pretensionActive, c.hist,
     					    c.maxTens, c.targetVelocity);
@@ -489,7 +489,7 @@ void T6Model::setup(tgWorld& world)
     //spec.addBuilder("rodmp", new tgRodInfo(rodConfigmp));
     //spec.addBuilder("actuated", new tgKinematicActuatorInfo(motorConfig));
     spec.addBuilder("actuated", new tgBasicContactCableInfo(motorConfig));
-    spec.addBuilder("passive", new tgBasicContactCableInfo(passiveCableConfig));
+    //spec.addBuilder("passive", new tgBasicContactCableInfo(passiveCableConfig));
 
     // Create your structureInfo
     tgStructureInfo structureInfo(s, spec);
