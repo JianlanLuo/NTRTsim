@@ -423,14 +423,14 @@ int main(int argc, char** argv)
             //std::cout << "Control Mode: " << control_mode << std::endl;
             for (unsigned i=0; i<12; ++i) {
                 double tmp_motor_pos = fabs(motor_pos_cb[i]->motor_pos);
-                if(tmp_motor_pos >= 5.76){
-                    tmp_motor_pos = 5.76;
+                if(tmp_motor_pos >= 0.576){
+                    tmp_motor_pos = 0.576;
                 }
-								if(tmp_motor_pos <= 2.76){
-                    tmp_motor_pos = 2.76;
+								if(tmp_motor_pos <= 0.276){
+                    tmp_motor_pos = 0.276;
                 }
                //	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
-								motor_targets[i] = tmp_motor_pos;
+								motor_targets[i] = tmp_motor_pos * 10.0;
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
                         temp_motor_targets[i] += motor_speed / (1000.0/step_cb.timesteps);
