@@ -392,9 +392,9 @@ int main(int argc, char** argv)
                               1,10,11};
     ros::Publisher face_pub = n.advertise<std_msgs::String>("/imu_face_string_sim", 1);
     double temp_motor_targets[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
-		const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
-		for (unsigned i=0; i<12; ++i){
-		std::cout << springCables[i] ->getRestLength() << std::endl;}
+		//const std::vector<tgBasicActuator*> springCables = myModel->getAllActuators();
+		//for (unsigned i=0; i<12; ++i){
+		//std::cout << springCables[i] ->getRestLength() << std::endl;}
 
     while (ros::ok()) {
         //get new ROS messages
@@ -423,11 +423,14 @@ int main(int argc, char** argv)
             //std::cout << "Control Mode: " << control_mode << std::endl;
             for (unsigned i=0; i<12; ++i) {
                 double tmp_motor_pos = fabs(motor_pos_cb[i]->motor_pos);
-                if(tmp_motor_pos >= 45.0){
-                    tmp_motor_pos = 45.0;
+                if(tmp_motor_pos >= 5.76){
+                    tmp_motor_pos = 5.76;
                 }
-               	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
-								motor_targets[i] = 5.56;
+								if(tmp_motor_pos <= 2.76){
+                    tmp_motor_pos = 2.76;
+                }
+               //	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
+								motor_targets[i] = tmp_motor_pos;
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
                         temp_motor_targets[i] += motor_speed / (1000.0/step_cb.timesteps);
