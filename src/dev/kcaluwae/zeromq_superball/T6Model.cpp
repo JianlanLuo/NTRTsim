@@ -62,8 +62,8 @@ namespace
     {
         double density;
         double radius;
-        double density_mp;
-        double radius_mp;
+        //double density_mp;
+      //  double radius_mp;
         double stiffnessPassive;
 	double stiffnessActive;
         double damping;
@@ -84,24 +84,24 @@ namespace
         bool   backDrivable;
     } c =
    {
-     0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
-     0.35,     // radius (length) radius of an endcap
-     0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
-     0.175,      //radius_mp (length) radius of the connecting rod
-     998.25,   // stiffnessPassive (kg / sec^2)
-     3152.36,  // stiffnessActive (kg / sec^2)
-     200.0,    // damping (kg / sec)
-     17.4,     // rod_length (length)
-     17.4/4,//4.5,      // rod_space (length)
-     17.4/2,        // rod_length_mp (length)
+     0.726,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
+     0.14,     // radius (length) radius of an endcap
+    // 0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
+    // 0.175,      //radius_mp (length) radius of the connecting rod
+     258.25,   // stiffnessPassive (kg / sec^2)
+     258.36,  // stiffnessActive (kg / sec^2)
+     10.0,    // damping (kg / sec)
+     10.4,     // rod_length (length)
+     10.4/4,//4.5,      // rod_space (length)
+     10.4/2,        // rod_length_mp (length)
      0.99,      // friction (unitless)
      0.01,     // rollFriction (unitless)
      0.0,      // restitution (?)
      100.0,    // pretension -> set to
      100.0,   // pretension -> set to
      0,			// History logging (boolean)
-     4000,   // maxTens
-     2,    // targetVelocity
+     40000,   // maxTens
+     0.2,    // targetVelocity
      0.09, // motor_radius // Spindle radius (length)
      2*4.24e-5, // motor_friction (kg*(length)^2/sec)
      4*2.749e-4, // motor_inertia (kg*(length)^2) // Inertia of motor, gearbox, and spindle all together
@@ -114,7 +114,39 @@ namespace
      // 3000.0,
      // 15.0,
      // 7.5,
-  };
+  };/*
+  c =
+  {
+    0.38618,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
+    0.355,//0.1369,     // radius (length) radius of an endcap   #DONE
+    0.0,      //needs to be changed // density_mp (kg / length^3) weight of connecting rod:
+    0.0,//0.0955,      //radius_mp (length) radius of the connecting rod   #Done
+    80,   // stiffnessPassive (kg / sec^2)  #TODO
+    250,  // stiffnessActive (kg / sec^2)   #WAIT ON THIS???
+    200.0,    // damping (kg / sec)   #TODO from motor need to figure out which motors used; jianlan emailing drew
+    10.033,     // rod_length (length)  #DONE
+    10.033/4,//4.5,      // rod_space (length)  #they divided rod length by four
+    10.033/2,        // rod_length_mp (length)   #they divided rod length by two
+    0.99,      // friction (unitless)  #ask drew how measured
+    0.1,     // rollFriction (unitless)  #ask drew how measured
+    0.0,      // restitution (?)
+    100,//4.79,    // pretension -> set to  #might want to scale this by 9.8 gravity
+    100,//4.79,   // pretension -> set to  #same as above
+    0,			// History logging (boolean)
+    4000,   // maxTens  #ask drew
+    0.2,    // targetVelocity , perv 2 should be changed, tt4 actual between 2cm/s ~ 5cm/s
+    0.09, // motor_radius // Spindle radius (length)  #find motor manual
+    2*4.24e-5, // motor_friction (kg*(length)^2/sec) #find motor manual
+    4*2.749e-4, // motor_inertia (kg*(length)^2) // Inertia of motor, gearbox, and spindle all together; #find motor manual
+    0, // Not backDrivable
+    // Use the below values for earlier versions of simulation.
+    // 1.006,
+    // 0.31,6
+    // 300000.0,
+    // 3000.0,
+    // 15.0,
+    // 7.5,
+ };*/
 } // namespace
 
 T6Model::T6Model() : tgModel()
