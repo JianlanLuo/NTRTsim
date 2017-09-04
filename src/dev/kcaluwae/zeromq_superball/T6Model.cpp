@@ -84,7 +84,7 @@ namespace
         bool   backDrivable;
     } c =
    {
-     0.726,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
+     0.826,    // density (kg / length^3) weight of both endcaps: 3.3kg (1.65 kg each)
      0.14,     // radius (length) radius of an endcap
     // 0.208,      // density_mp (kg / length^3) weight of connecting rod: 200g
     // 0.175,      //radius_mp (length) radius of the connecting rod
