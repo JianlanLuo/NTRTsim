@@ -429,7 +429,7 @@ int main(int argc, char** argv)
 								if(tmp_motor_pos <= 0.276){
                     tmp_motor_pos = 0.276;
                 }
-								tmp_motor_targets[i] = tmp_motor_pos * 10.0;
+								temp_motor_targets[i] = tmp_motor_pos * 10.0;
                //	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
 								//motor_targets[i] = tmp_motor_pos * 10.0;
 		/*if(control_mode == T6PIDController::VELOCITY){
