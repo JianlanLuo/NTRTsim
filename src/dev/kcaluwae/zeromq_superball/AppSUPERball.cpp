@@ -425,12 +425,12 @@ int main(int argc, char** argv)
             //std::cout << "Control Mode: " << control_mode << std::endl;
             for (unsigned i=0; i<24; ++i) {
                 double tmp_motor_pos = fabs(motor_pos_cb[i]->motor_pos);
-                if(tmp_motor_pos >= 45.0){
-                    tmp_motor_pos = 45.0;
+                if(tmp_motor_pos >= 0.576){
+                    tmp_motor_pos = 0.576;
                 }
-               	motor_targets[i] = (0.95 - (tmp_motor_pos * 0.009))*10.0; // Convert radians back to length based on SUPERball motor spindle
+               	if(tmp_motor_pos <= 0.276){tmp_motor_pos = 0.276;} // Convert radians back to length based on SUPERball motor spindle
 								//motor_targets[i] =9.5;
-
+								temp_motor_targets[i] = tmp_motor_pos * 10.0;
 								//std::cout << motor_targets[i]<<std::endl;
 		/*if(control_mode == T6PIDController::VELOCITY){
                     if(springCables[i]->getRestLength() > motor_targets[i]){
@@ -462,7 +462,7 @@ int main(int argc, char** argv)
 		    std::cout << i << "\tpos: " << cur_pos << "\ttarget_pos: " << motor_targets[i] << "\ttarget vel: " << motor_pos_cb[i]->motor_pos << "\ttension: " <<springCables[i]->getTension() <<"\n";
 		} else {*/
                     // Changed motor_targets to match the real robot's input commands
-                    temp_motor_targets[i] = motor_targets[i];
+                  //  temp_motor_targets[i] = motor_targets[i];
 		    // std::cout << i << "\tpos: " << springCables[i]->getRestLength() << "\ttarget_pos: " << temp_motor_targets[i] << "\ttarget vel: " << motor_pos_cb[i]->motor_pos << "\ttension: " <<springCables[i]->getTension() <<"\n";  //FIXME
                 //}
             }
