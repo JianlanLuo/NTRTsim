@@ -49,15 +49,15 @@ class tgHillyGround : public tgBulletGround
         {
             public:
                 Config(btVector3 eulerAngles = btVector3(0.0, 0.0, 0.0),
-                       double friction = 0.5,
+                       double friction = 0.99,
                        double restitution = 0.0,
                        btVector3 size = btVector3(5000.0, 1.5, 5000.0),
                        btVector3 origin = btVector3(0.0, 0.0, 0.0),
                        std::size_t nx = 500,
                        std::size_t ny = 500,
                        double margin = 0.05,
-                       double triangleSize = 5.0,
-                       double waveHeight = 1,
+                       double triangleSize = 10,
+                       double waveHeight = 0.2,
                        double offset = 0.5);
 
                 /** Euler angles are specified as yaw pitch and roll */
