@@ -56,8 +56,8 @@ class tgHillyGround : public tgBulletGround
                        std::size_t nx = 500,
                        std::size_t ny = 500,
                        double margin = 0.05,
-                       double triangleSize = 10,
-                       double waveHeight = 0.2,
+                       double triangleSize = 2,
+                       double waveHeight = 0.6,
                        double offset = 0.5);
 
                 /** Euler angles are specified as yaw pitch and roll */
