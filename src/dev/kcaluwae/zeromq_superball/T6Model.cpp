@@ -101,7 +101,7 @@ namespace
      100.0,   // pretension -> set to
      0,			// History logging (boolean)
      4000,   // maxTens
-     1.0,    // targetVelocity
+     0.8,    // targetVelocity
      0.09, // motor_radius // Spindle radius (length)
      2*4.24e-5, // motor_friction (kg*(length)^2/sec)
      4*2.749e-4, // motor_inertia (kg*(length)^2) // Inertia of motor, gearbox, and spindle all together
